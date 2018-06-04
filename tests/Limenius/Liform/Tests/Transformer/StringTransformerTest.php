@@ -11,6 +11,7 @@
 
 namespace Limenius\Liform\Tests\Liform\Transformer;
 
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Limenius\Liform\Transformer\CompoundTransformer;
@@ -40,4 +41,10 @@ class StringTransformerTest extends LiformTestCase
         $this->assertTrue(is_array($transformed));
         $this->assertEquals('.{5,}', $transformed['properties']['firstName']['pattern']);
     }
+
+    public function testFormatIsSet()
+    {
+        $this->markTestIncomplete("To be implemented");
+    }
+
 }
