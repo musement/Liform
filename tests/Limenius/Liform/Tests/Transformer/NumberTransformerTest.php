@@ -30,8 +30,7 @@ class NumberTransformerTest extends LiformTestCase
         $form = $this->factory->create(FormType::class)
             ->add(
                 'somefield',
-                NumberType::class,
-                ['liform' => ['widget' => 'widget']]
+                NumberType::class
             );
         $resolver = new Resolver();
         $resolver->setTransformer('number', new NumberTransformer($this->translator));
@@ -39,6 +38,5 @@ class NumberTransformerTest extends LiformTestCase
         $transformed = $transformer->transform($form);
         $this->assertTrue(is_array($transformed));
         $this->assertEquals('number', $transformed['properties']['somefield']['type']);
-        $this->assertEquals('widget', $transformed['properties']['somefield']['widget']);
     }
 }

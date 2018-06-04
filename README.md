@@ -111,7 +111,7 @@ use Limenius\Liform\Liform;
 $stringTransformer = $this->get('liform.transformer.string');
 
 $resolver = $this->get('liform.resolver');
-$resolver->setTransformer('file', $stringTransformer, 'file_widget');
+$resolver->setTransformer('file', $stringTransformer);
 $liform = new Liform($resolver);
 ```
 
@@ -177,47 +177,6 @@ class DummyType extends AbstractType
    "properties":{
       "someText":{
          "type":"string",
-         "title":"someText",
-         "propertyOrder":1
-      }
-   },
-   "required":[
-      "someText"
-   ]
-}
-```
-
-### Widget
-
-Sometimes you might want to render a field differently then the default behaviour for that type. By using the liform attributes you can specify a particular widget that determines how this field is rendered.
-
-
-If the attribute `widget` of `liform` is provided, as in the following code:
-
-```php
-class DummyType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('someText', Type\TextType::class, [
-                'liform' => [
-                    'widget' => 'my_widget'
-                ]
-            ]);
-    }
-}
-```
-
-The schema generated will have that `widget` option:
-```json
-{
-   "title":"dummy",
-   "type":"object",
-   "properties":{
-      "someText":{
-         "type":"string",
-         "widget":"my_widget",
          "title":"someText",
          "propertyOrder":1
       }

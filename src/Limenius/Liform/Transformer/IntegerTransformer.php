@@ -21,10 +21,10 @@ class IntegerTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform(FormInterface $form, array $extensions = [], $widget = null)
+    public function transform(FormInterface $form, array $extensions = [])
     {
         $schema = ['type' => 'integer'];
-        $schema = $this->addCommonSpecs($form, $schema, $extensions, $widget);
+        $schema = $this->addCommonSpecs($form, $schema, $extensions);
 
         return $schema;
     }

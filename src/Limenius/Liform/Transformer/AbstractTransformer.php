@@ -61,17 +61,15 @@ abstract class AbstractTransformer implements TransformerInterface
      * @param FormInterface        $form
      * @param array                $schema
      * @param ExtensionInterface[] $extensions
-     * @param string               $widget
      *
      * @return array
      */
-    protected function addCommonSpecs(FormInterface $form, array $schema, $extensions = [], $widget)
+    protected function addCommonSpecs(FormInterface $form, array $schema, $extensions = [])
     {
         $schema = $this->addLabel($form, $schema);
         $schema = $this->addAttr($form, $schema);
         $schema = $this->addPattern($form, $schema);
         $schema = $this->addDescription($form, $schema);
-        $schema = $this->addWidget($form, $schema, $widget);
         $schema = $this->applyExtensions($extensions, $form, $schema);
 
         return $schema;
@@ -140,26 +138,6 @@ abstract class AbstractTransformer implements TransformerInterface
             if (isset($liform['description']) && $description = $liform['description']) {
                 $schema['description'] = $this->translator->trans($description);
             }
-        }
-
-        return $schema;
-    }
-
-    /**
-     * @param FormInterface $form
-     * @param array         $schema
-     * @param mixed         $configWidget
-     *
-     * @return array
-     */
-    protected function addWidget(FormInterface $form, array $schema, $configWidget)
-    {
-        if ($liform = $form->getConfig()->getOption('liform')) {
-            if (isset($liform['widget']) && $widget = $liform['widget']) {
-                $schema['widget'] = $widget;
-            }
-        } elseif ($configWidget) {
-            $schema['widget'] = $configWidget;
         }
 
         return $schema;

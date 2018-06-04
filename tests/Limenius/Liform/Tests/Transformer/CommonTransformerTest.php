@@ -83,36 +83,4 @@ class CommonTransformerTest extends LiformTestCase
         $this->assertEquals('a label', $transformed['properties']['firstName']['title']);
     }
 
-    public function testWidget()
-    {
-        $form = $this->factory->create(FormType::class)
-            ->add(
-                'firstName',
-                TextType::class,
-                ['liform' => ['widget' => 'my widget']]
-            );
-        $resolver = new Resolver();
-        $resolver->setTransformer('text', new StringTransformer($this->translator));
-        $transformer = new CompoundTransformer($this->translator, null, $resolver);
-        $transformed = $transformer->transform($form);
-
-        $this->assertTrue(is_array($transformed));
-        $this->assertArrayHasKey('widget', $transformed['properties']['firstName']);
-    }
-
-    public function testWidgetViaTransformerDefinition()
-    {
-        $form = $this->factory->create(FormType::class)
-            ->add(
-                'firstName',
-                TextType::class
-            );
-        $resolver = new Resolver();
-        $resolver->setTransformer('text', new StringTransformer($this->translator), 'widg');
-        $transformer = new CompoundTransformer($this->translator, null, $resolver);
-        $transformed = $transformer->transform($form);
-
-        $this->assertTrue(is_array($transformed));
-        $this->assertArrayHasKey('widget', $transformed['properties']['firstName']);
-    }
 }
