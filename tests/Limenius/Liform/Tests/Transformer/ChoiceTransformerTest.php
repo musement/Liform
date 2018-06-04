@@ -82,8 +82,6 @@ class ChoiceTransformerTest extends LiformTestCase
         $this->assertEquals(['a-translated', 'b-translated'], $transformed['properties']['firstName']['enum_titles']);
         $this->assertArrayHasKey('enum', $transformed['properties']['firstName']);
         $this->assertEquals(['A', 'B'], $transformed['properties']['firstName']['enum']);
-        $this->assertArrayHasKey('widget', $transformed['properties']['firstName']);
-        $this->assertEquals('choice-expanded',  $transformed['properties']['firstName']['widget']);
     }
 
     public function testChoiceMultiple()
@@ -105,7 +103,6 @@ class ChoiceTransformerTest extends LiformTestCase
         $this->assertTrue(is_array($transformed));
         $this->assertArrayHasKey('items', $transformed['properties']['firstName']);
         $this->assertEquals('array', $transformed['properties']['firstName']['type']);
-        $this->assertArrayNotHasKey('widget', $transformed['properties']['firstName']);
     }
 
     public function testChoiceMultipleExpanded()
@@ -128,7 +125,5 @@ class ChoiceTransformerTest extends LiformTestCase
         $this->assertTrue(is_array($transformed));
         $this->assertArrayHasKey('items', $transformed['properties']['firstName']);
         $this->assertEquals('array', $transformed['properties']['firstName']['type']);
-        $this->assertArrayHasKey('widget', $transformed['properties']['firstName']);
-        $this->assertEquals('choice-multiple-expanded',  $transformed['properties']['firstName']['widget']);
     }
 }

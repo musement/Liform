@@ -22,7 +22,7 @@ class ChoiceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform(FormInterface $form, array $extensions = [], $widget = null)
+    public function transform(FormInterface $form, array $extensions = [])
     {
         $formView = $form->createView();
 
@@ -46,7 +46,7 @@ class ChoiceTransformer extends AbstractTransformer
             $schema = $this->transformSingle($form, $choices, $titles);
         }
 
-        $schema = $this->addCommonSpecs($form, $schema, $extensions, $widget);
+        $schema = $this->addCommonSpecs($form, $schema, $extensions);
 
         return $schema;
     }
@@ -60,10 +60,6 @@ class ChoiceTransformer extends AbstractTransformer
             'enum_titles' => $titles,
             'type' => 'string',
         ];
-
-        if ($formView->vars['expanded']) {
-            $schema['widget'] = 'choice-expanded';
-        }
 
         return $schema;
     }
@@ -82,10 +78,6 @@ class ChoiceTransformer extends AbstractTransformer
             'uniqueItems' => true,
             'type' => 'array',
         ];
-
-        if ($formView->vars['expanded']) {
-            $schema['widget'] = 'choice-multiple-expanded';
-        }
 
         return $schema;
     }
