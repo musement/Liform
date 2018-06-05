@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Validator\ValidatorTypeGuesser;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Form\Guess\ValueGuess;
 use Symfony\Component\Form\Guess\Guess;
+use Symfony\Component\Validator\Constraints\Count;
 
 /**
  * @author Nacho Martín <nacho@limenius.com>
@@ -56,6 +57,26 @@ class ValidatorGuesser extends ValidatorTypeGuesser
                     return new ValueGuess(strlen((string) $constraint->min), Guess::LOW_CONFIDENCE);
                 }
                 break;
+            case Count::class:
+                return new ValueGuess($constraint->min, Guess::LOW_CONFIDENCE);
+                break;
         }
     }
+
+    /**
+     * Guesses a field's maximum length based on the given constraint.
+     *
+     * @param Constraint $constraint The constraint to guess for
+     *
+     * @return ValueGuess|null The guess for the maximum length
+     */
+    public function guessMaxLengthForConstraint(Constraint $constraint)
+    {
+        switch (\get_class($constraint)) {
+            case Count::class:
+                return new ValueGuess($constraint->max, Guess::LOW_CONFIDENCE);
+                break;
+        }
+    }
+
 }

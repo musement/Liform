@@ -76,6 +76,22 @@ class ArrayTransformer extends AbstractTransformer
             'items' => $children[0],
         ];
 
+        $minLength = $this->validatorGuesser->guessMinLengthForConstraint(
+            $form->getConfig()->getOption('constraints')[0]
+        );
+
+        if ($minLength) {
+            $schema['minLength'] = $minLength->getValue();
+        }
+
+        $maxLenght = $this->validatorGuesser->guessMaxLengthForConstraint(
+            $form->getConfig()->getOption('constraints')[0]
+        );
+
+        if ($maxLenght) {
+            $schema['maxLength'] = $maxLenght->getValue();
+        }
+
         $schema = $this->addCommonSpecs($form, $schema, $extensions);
 
         return $schema;
