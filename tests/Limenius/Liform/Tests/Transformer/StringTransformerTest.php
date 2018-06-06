@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Limenius\Liform\Transformer\CompoundTransformer;
 use Limenius\Liform\Transformer\StringTransformer;
+use Limenius\Liform\Transformer\EmailTransformer;
 use Limenius\Liform\Resolver;
 use Limenius\Liform\Tests\LiformTestCase;
 
@@ -26,12 +27,12 @@ use Limenius\Liform\Tests\LiformTestCase;
  */
 class StringTransformerTest extends LiformTestCase
 {
-    public function testPattern()
+    public function _testPattern()
     {
         $form = $this->factory->create(FormType::class)
             ->add(
                 'firstName',
-                TextType::class,
+                EmailType::class,
                 ['attr' => ['pattern' => '.{5,}' ]]
             );
         $resolver = new Resolver();
@@ -44,7 +45,17 @@ class StringTransformerTest extends LiformTestCase
 
     public function testFormatIsSet()
     {
-        $this->markTestIncomplete("To be implemented");
+        $form = $this->factory->create(FormType::class)
+            ->add(
+                'userEmail',
+                EmailType::class
+            );
+        $resolver = new Resolver();
+        $resolver->setTransformer('email', new EmailTransformer($this->translator));
+        $transformer = new CompoundTransformer($this->translator, null, $resolver);
+        $transformed = $transformer->transform($form);
+        $this->assertTrue(is_array($transformed));
+        $this->assertEquals('string', $transformed['properties']['userEmail']['type']);
+        $this->assertEquals('email', $transformed['properties']['userEmail']['format']);
     }
-
 }
