@@ -19,6 +19,7 @@ use Limenius\Liform\Transformer\StringTransformer;
 use Limenius\Liform\Transformer\EmailTransformer;
 use Limenius\Liform\Resolver;
 use Limenius\Liform\Tests\LiformTestCase;
+use Limenius\Liform\Transformer\TransformerInterface;
 
 /**
  * @author Nacho Martín <nacho@limenius.com>
@@ -27,18 +28,18 @@ use Limenius\Liform\Tests\LiformTestCase;
  */
 class StringTransformerTest extends LiformTestCase
 {
-    public function _testPattern()
+    public function testPattern()
     {
         $form = $this->factory->create(FormType::class)
             ->add(
                 'firstName',
-                EmailType::class,
+                TextType::class,
                 ['attr' => ['pattern' => '.{5,}' ]]
             );
-        $resolver = new Resolver();
-        $resolver->setTransformer('text', new StringTransformer($this->translator));
-        $transformer = new CompoundTransformer($this->translator, null, $resolver);
-        $transformed = $transformer->transform($form);
+        $transformed = $this->transformFrom(
+            $this->resolverFrom('text', new StringTransformer($this->translator)),
+            $form
+        );
         $this->assertTrue(is_array($transformed));
         $this->assertEquals('.{5,}', $transformed['properties']['firstName']['pattern']);
     }
@@ -50,12 +51,27 @@ class StringTransformerTest extends LiformTestCase
                 'userEmail',
                 EmailType::class
             );
-        $resolver = new Resolver();
-        $resolver->setTransformer('email', new EmailTransformer($this->translator));
-        $transformer = new CompoundTransformer($this->translator, null, $resolver);
-        $transformed = $transformer->transform($form);
+        $transformed = $this->transformFrom(
+            $this->resolverFrom('email', new EmailTransformer($this->translator)),
+            $form
+        );
         $this->assertTrue(is_array($transformed));
         $this->assertEquals('string', $transformed['properties']['userEmail']['type']);
         $this->assertEquals('email', $transformed['properties']['userEmail']['format']);
+    }
+
+    private function resolverFrom($type, TransformerInterface $transformer)
+    {
+        $resolver = new Resolver();
+        $resolver->setTransformer($type, $transformer);
+
+        return $resolver;
+    }    
+
+    private function transformFrom(Resolver $resolver, $form)
+    {
+        $transformer = new CompoundTransformer($this->translator, null, $resolver);
+
+        return $transformer->transform($form);
     }
 }
