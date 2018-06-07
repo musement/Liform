@@ -57,25 +57,36 @@ class ValidatorGuesser extends ValidatorTypeGuesser
                     return new ValueGuess(strlen((string) $constraint->min), Guess::LOW_CONFIDENCE);
                 }
                 break;
-            case Count::class:
-                return new ValueGuess($constraint->min, Guess::LOW_CONFIDENCE);
-                break;
         }
     }
 
     /**
-     * Guesses a field's maximum length based on the given constraint.
+     * Guesses a field's minimum items based on the given constraint.
+     *
+     * @param Constraint $constraint The constraint to guess for
+     *
+     * @return ValueGuess|null The guess for the minimum items
+     */
+    public function guessMinItemsForConstraint(Constraint $constraint)
+    {
+        switch (\get_class($constraint)) {
+            case Count::class:
+                return new ValueGuess($constraint->min, Guess::LOW_CONFIDENCE);
+        }
+    }
+
+    /**
+     * Guesses a field's maximum items based on the given constraint.
      *
      * @param Constraint $constraint The constraint to guess for
      *
      * @return ValueGuess|null The guess for the maximum length
      */
-    public function guessMaxLengthForConstraint(Constraint $constraint)
+    public function guessMaxItemsForConstraint(Constraint $constraint)
     {
         switch (\get_class($constraint)) {
             case Count::class:
                 return new ValueGuess($constraint->max, Guess::LOW_CONFIDENCE);
-                break;
         }
     }
 
